@@ -2,9 +2,14 @@
 package curl
 
 /*
-#cgo linux pkg-config: libcurl
-#cgo darwin LDFLAGS: -lcurl
-#cgo windows LDFLAGS: -lcurl
+#cgo linux pkg-config: libcurl-impersonate-chrome
+// #cgo darwin LDFLAGS: -L./lib -lcurl-impersonate-chrome
+// #cgo darwin pkg-config: libcurl-impersonate-chrome
+#cgo darwin LDFLAGS: -L${SRCDIR}/lib/darwin/curl-impersonate-chrome -lcurl-impersonate-chrome
+// #cgo linux LDFLAGS: -L${SRCDIR}/lib/linux/libcurl-impersonate-chrome -lcurl-impersonate-chrome
+// #cgo darwin LDFLAGS: -L/Users/yorhe/Desktop/work/dev/project/2022/dr2am/go-curl/go-curl/lib -lcurl-impersonate-chrome
+
+// #cgo windows LDFLAGS: -lcurl
 #include <stdlib.h>
 #include <curl/curl.h>
 

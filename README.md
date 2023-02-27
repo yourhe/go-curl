@@ -28,7 +28,7 @@ How to Install
 Make Sure You Have libcurl (and its develop headers, static/dynamic libs) installed!
 
 
-    $ go get -u github.com/andelf/go-curl
+    $ go get -u github.com/yourhe/go-curl
 
 Current Status
 --------------
@@ -48,7 +48,7 @@ package main
 
 import (
     "fmt"
-    curl "github.com/andelf/go-curl"
+    curl "github.com/yourhe/go-curl"
 )
 
 func main() {

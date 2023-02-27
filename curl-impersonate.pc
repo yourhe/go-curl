@@ -1,0 +1,10 @@
+prefix=/usr
+includedir=/build/lib/linux
+#includedir=/Users/yorhe/Desktop/work/dev/project/2022/dr2am/go-curl/curl-impersonate/build/curl-7.84.0/include
+libdir=/build/lib/linux/curl-impersonate-chrome
+
+Name: curl-impersonate
+Description: curl-impersonate
+Version: 12.2
+Cflags: -I${includedir}
+Libs: -L${libdir} -lcurl-impersonate-chrome

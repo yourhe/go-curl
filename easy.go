@@ -66,8 +66,8 @@ import (
 	"fmt"
 	"mime"
 	"path"
-	"unsafe"
 	"sync"
+	"unsafe"
 )
 
 type CurlInfo C.CURLINFO
@@ -137,7 +137,7 @@ func (c *contextMap) Delete(k uintptr) {
 	delete(c.items, k)
 }
 
-var context_map = &contextMap {
+var context_map = &contextMap{
 	items: make(map[uintptr]*CURL),
 }
 
@@ -231,7 +231,9 @@ func (curl *CURL) Setopt(opt int, param interface{}) error {
 		} else {
 			return err
 		}
-
+	case opt == OPT_SHARE:
+		share := param.(*CURLSH)
+		return newCurlError(C.curl_easy_setopt_pointer(p, C.CURLoption(opt), unsafe.Pointer(share.handle)))
 	// for OPT_HTTPPOST, use struct Form
 	case opt == OPT_HTTPPOST:
 		post := param.(*Form)
@@ -396,13 +398,13 @@ func (curl *CURL) Getinfo(info CurlInfo) (ret interface{}, err error) {
 		a_long := C.long(-1)
 		err := newCurlError(C.curl_easy_getinfo_long(p, cInfo, &a_long))
 		ret := int(a_long)
-		debugf("Getinfo %s", ret)
+		debugf("Getinfo %d", ret)
 		return ret, err
 	case C.CURLINFO_DOUBLE:
 		a_double := C.double(0.0)
 		err := newCurlError(C.curl_easy_getinfo_double(p, cInfo, &a_double))
 		ret := float64(a_double)
-		debugf("Getinfo %s", ret)
+		debugf("Getinfo %f", ret)
 		return ret, err
 	case C.CURLINFO_SLIST:
 		a_ptr_slist := new(C.struct_curl_slist)

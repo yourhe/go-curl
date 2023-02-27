@@ -1,8 +1,9 @@
 package main
 
 import (
-	curl "github.com/andelf/go-curl"
 	"time"
+
+	curl "github.com/yourhe/go-curl"
 )
 
 func write_data(ptr []byte, userdata interface{}) bool {
@@ -24,20 +25,25 @@ func main() {
 	easy := curl.EasyInit()
 	defer easy.Cleanup()
 
-	easy.Setopt(curl.OPT_URL, "http://cn.bing.com/")
-
-	easy.Setopt(curl.OPT_WRITEFUNCTION, write_data)
-
+	easy.Setopt(curl.OPT_URL, "https://onlinelibrary.wiley.com/?cookieSet=1")
+	// easy.Setopt(curl.OPT_COOKIEJAR, "./cookie.jar")
+	easy.Setopt(curl.OPT_COOKIEFILE, "./cookie.jar")
+	easy.Setopt(curl.OPT_HTTPHEADER, []string{"Accept:text/html"})
+	easy.Setopt(curl.OPT_HTTPHEADER, []string{"Referer:http://www.google.com"})
+	easy.Setopt(curl.OPT_HTTPHEADER, []string{"Cookie:bcd=asdf"})
+	// easy.Setopt(curl.OPT_WRITEFUNCTION, write_data)
+	easy.Setopt(curl.OPT_VERBOSE, true)
 	// make a chan
 	ch := make(chan string, 100)
 	go func(ch chan string) {
 		for {
 			data := <-ch
 			println("Got data size=", len(data))
+			println("Got data=", data)
 		}
 	}(ch)
 
-	easy.Setopt(curl.OPT_WRITEDATA, ch)
+	// easy.Setopt(curl.OPT_WRITEDATA, ch)
 
 	if err := easy.Perform(); err != nil {
 		println("ERROR: ", err.Error())
